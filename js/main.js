@@ -1,41 +1,22 @@
 /* JavaScript for WATS 3020 Sandwich Machine Assignment */
+//Miles Coleman
 
-// Step One ///////////////////////////////////////////////////////////
-//
-// Gather data from the user using the prompt() command.
-// Users will fill in each prompt with text.
-// Provide examples where it may help (e.g. show a comma-separated list of
-// toppings to indicate how to specify toppings, etc.)
-//
-// TODO: Prompt the user for what kind of bread they would like.
-// Ideally, that would look something like: "What kind of bread (white, wheat, flat)?"
-
+//Solicit user input for sandwich, bread, sauce, and toppings
+let sandwichType = prompt("Which sandwich do you want? (the cyber-turkey: turkey, swiss cheese, and digital lettuce; or the world wide vegetable: roasted bell peppers, seasoned mushrooms, and cheddar cheese.")
+let breadType = prompt("What kind of bread would you like? (wheat, rye, or sourdough)?")
+let meatType = prompt("Do you a meat you'd like to add? (You can choose turkey, ham, or vegetables--separate individual items with a comma)")
+let toppingsType = prompt("Do you have special toppings you'd like to add? (You can choose pickle, onion, or extra cheese--separate individual items with a comma)")
+let condimentType = prompt("What kind of sauce do you want on your sandwich? (chipotle ranch or honey aoli)--separate individual items with a comma)")
+let studentDeal = prompt("Are you a student? Type yes or no. (If not, leave blank)")
 
 
-// TODO: Prompt the user for what kind of meat(s) they would like.
-// Indicate they should separate multiple items with a comma:
-// "What kind of meat? (Separate meats with a comma if you would like more than one.)"
+if (studentDeal == "yes") {
+    studentMath = 1; 
+} else { 
+    studentMath = 0; 
+}
 
-
-
-// TODO: Prompt the user for what kind of toppings they would like.
-// We expect this to be multiple, so ask them to provide you with a
-// comma-separated list using a user friendly prompt.
-
-
-
-// TODO: Prompt the user for what kind of condiments they would like.
-// Again, we should expect a comma-separated list if items here.
-
-
-
-// Step Two ////////////////////////////////////////////////////////////
-//
-// Process all the input to calculate values for the user's order. The named
-// values are initialized to `null`. Change that so they equal the proper value.
-//
-// The `prices` object below specifies the prices for each thing.
-
+//Individual item prices
 let prices = {
     sandwich: 5, // Base price for a sandwich is $5, includes bread
     meat: 1, // Each kind of meat on a sandwich costs $1
@@ -43,55 +24,48 @@ let prices = {
     condiment: 0.25 // Each condiment costs $0.25
 };
 
-// TODO: Convert order information from Strings to Arrays.
+//Convert order information into arrays
+let meatArray = meatType.split(",");
+let toppingArray = toppingsType.split(",");
+let condimentArray = condimentType.split(",");
 
-let meatArray = null;
-let toppingArray = null;
-let condimentArray = null;
+//Calculate cost of sandwich items
+let meatAmount = meatArray.length * prices.meat;
+let toppingAmount = toppingArray.length * prices.topping;
+let condimentAmount = condimentArray.length * prices.condiment;
 
-// TODO: Calculate cost for meat, toppings, and condiments.
-// This requires you to determine the length of each Array you just made
-// and multiply out the costs. You will need to refer to the attributes of the
-// `prices` object in order to calculate these costs.
+//Combine items and sandwich prices into subtotal
+let subtotal = prices.sandwich + meatAmount + toppingAmount + condimentAmount;
 
-let meatCost = null;
-let toppingCost = null;
-let condimentCost = null;
-
-// TODO: Combine the costs of each part of the sandwich to get the subtotal.
-let subtotal = null;
-
-// TODO: Calculate the tax owed using the waStateTaxRate.
+//Add tax
 let waStateTaxRate = 0.065;
-let orderTax = null;
+let sandwichTax = subtotal * waStateTaxRate;
 
-// TODO: Calculate `totalPrice` by adding `subtotal` and `orderTax`.
-let totalPrice = null;
+//Student deal
+let studentDiscountRate = .20; 
+let studentDiscount = studentDiscountRate * subtotal * studentMath; 
 
+//Add up total 
+let totalAmount = sandwichTax + subtotal - studentDiscount;
 
-// Step Three //////////////////////////////////////////////////////////
-//
-// TODO: Now that we've calculated all the values, insert them into this
-// template literal using proper expression tags. Note that we must provide
-// all of the info the user gave us to confirm the order, and then we must also
-// provide the cost information so the user understands their bill.
-
+//Print itemized receipt 
 let receiptTemplate = `
-    <p>SANDWICH ORDER</p>
-    <p>Bread: wheat</p>
-    <p>Meat: ham, turkey</p>
-    <p>Toppings: lettuce, tomato, peppers, spinach</p>
-    <p>Condiments: mayo, mustard, thousand island</p>
+    <p>Sandwich: ${sandwichType}</p>
+    <p>Bread: ${breadType}</p>
+    <p>Meat: ${meatType}</p>
+    <p>Toppings: ${toppingsType}</p>
+    <p>Condiments: ${condimentType}</p>
     <p>---------------------</p>
-    <p class="text-right">Sandwich: $4.42</p>
-    <p class="text-right">Meat: $2.00</p>
-    <p class="text-right">Toppings: $2.00</p>
-    <p class="text-right">Condiments: $1.42</p>
+    <p class="text-right">Sandwich: $${prices.sandwich.toFixed(2)}</p>
+    <p class="text-right">Meat: $${meatAmount.toFixed(2)}</p>
+    <p class="text-right">Toppings: $${toppingAmount.toFixed(2)}</p>
+    <p class="text-right">Condiments: $${condimentAmount.toFixed(2)}</p>
     <p class="text-right">--------</p>
-    <p class="text-right">Subtotal: $9.84</p>
-    <p class="text-right">Tax: $1.42</p>
+    <p class="text-right">Subtotal: $${subtotal.toFixed(2)}</p>
+    <p class="text-right">Tax: $${sandwichTax.toFixed(2)}</p>
+	<p class="text-right">Student Discount: $${studentDiscount.toFixed(2)}</p>
     <p class="text-right">--------</p>
-    <p class="text-right">Total: $4.84</p>
+    <p class="text-right">Total: $${totalAmount.toFixed(2)}</p>
 `
 
 ///////////////////////////////////////////////////////////////////////
